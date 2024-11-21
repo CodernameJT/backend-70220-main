@@ -5,7 +5,6 @@ import jwt from "passport-jwt";
 import { userDao } from "../dao/mongo/user.dao.js";
 import { createHash, isValidPassword } from "../utils/hashPassword.js";
 import { cookieExtractor } from "../utils/cookieExtractor.js";
-import { createToken } from "../utils/jwt.js";
 import { cartDao } from "../dao/mongo/cart.dao.js";
 
 const LocalStrategy = local.Strategy;
@@ -20,13 +19,7 @@ export const initializePassport = () => {
     "register",
     new LocalStrategy({ passReqToCallback: true, usernameField: "email" }, async (req, username, password, done) => {
       // Passport local utiliza las propiedades username y password
-      /* 
-      "register" es el nombre de la estrategia que estamos creando.
-      passReqToCallback: true, nos permite acceder a la request en la función de autenticación.
-      usernameField: "email", nos permite definir el campo que usaremos como username.
-      done es una función que debemos llamar cuando terminamos de procesar la autenticación.
-      Nota: passport recibe dos datos el username y el password, en caso de que no tengamos un campo username en nuestro formulario, podemos usar usernameField para definir el campo que usaremos como username.
-      */
+      
 
       try {
         const { first_name, last_name, age, role } = req.body;
@@ -78,12 +71,7 @@ export const initializePassport = () => {
   );
 
   // Serialización y deserialización de usuarios
-  /* 
-  La serialización y deserialización de usuarios es un proceso que nos permite almacenar y recuperar información del usuario en la sesión.
-  La serialización es el proceso de convertir un objeto de usuario en un identificador único.
-  La deserialización es el proceso de recuperar un objeto de usuario a partir de un identificador único.
-  Los datos del user se almacenan en la sesión y se recuperan en cada petición.
-  */
+  
 
   passport.serializeUser((user, done) => {
     done(null, user._id);
